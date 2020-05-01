@@ -15,7 +15,6 @@ def num_integration(arr1, arr2, arr3):
 
 gyro_data = 'sensor_data/My Experiment 2020-04-25 11-48-49/Gyroscope.csv'  # Open .csv file with time and acceleration in 3 axis, x,y,z
 accelerometer_data = 'sensor_data/My Experiment 2020-04-25 11-48-49/Accelerometer.csv'
-sample_rate = 100  # Set the sample rate for the specified device
 
 time1 = np.array(
     np.loadtxt(gyro_data, delimiter=',', skiprows=1, usecols=0))  # Create an array containing time values
@@ -54,6 +53,9 @@ else:
         acceleration_x = acceleration_x[0:-(len(time2) - len(time1))]
         acceleration_y = acceleration_y[0:-(len(time2) - len(time1))]
         acceleration_z = acceleration_z[0:-(len(time2) - len(time1))]
+
+sample_rate = 100  # Set the sample rate for the specified device
+sample_size = len(time)
 # Declare arrays for velocity and position in x,y,z directions with a size equal to that of time
 theta_x = np.zeros(len(time))
 theta_y = np.zeros(len(time))
