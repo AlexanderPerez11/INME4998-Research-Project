@@ -56,7 +56,7 @@ else:
 
 sample_rate = 100  # Set the sample rate for the specified device
 sample_size = len(time)
-pipi = 1
+
 # Declare arrays for velocity and position in x,y,z directions with a size equal to that of time
 theta_x = np.zeros(len(time))
 theta_y = np.zeros(len(time))
