@@ -124,15 +124,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea
-
 pyvenv.cfg
-
 Kinematics_Analysis_Point_Mass_NF_Copy.py
-
 Kinematic Analysis Point Mass (C, F, D).py
-
 Kinematic Analysis with Rotation.py
-
 YET ANOTHER ANIMATION COPY.py
-
 Scripts
+Kinematic_Analysis_Point_Mass_NF_ND.py
+Kinematics_Analysis_Point_Mass_NF.py
