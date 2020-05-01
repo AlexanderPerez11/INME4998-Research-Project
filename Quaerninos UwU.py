@@ -8,7 +8,7 @@ sample_rate = 100
 samples = 1000
 dt = sample_rate/samples
 w_x = 0
-w_y = -0.5
+w_y = -0.6
 w_z = -0.5
 
 w_norm = sqrt(w_x**2 + w_y**2 + w_z**2)
