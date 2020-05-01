@@ -114,4 +114,5 @@ def animation1d(time, xacc, yacc, zacc, xvel, yvel, zvel, xpos, ypos, zpos, wx, 
                                    repeat=False)
     animation.FuncAnimation(fig, animate3, init_func=init3, frames=len(zpos), interval=10, blit=True,
                             repeat=False)
+    False
     plt.show()
