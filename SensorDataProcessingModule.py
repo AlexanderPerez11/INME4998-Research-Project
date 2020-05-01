@@ -13,7 +13,8 @@ def num_integration(arr1, arr2, arr3):
 
 # Recollect data from accelerometer and gyroscope
 
-gyro_data = 'sensor_data/My Experiment 2020-04-25 11-48-49/Gyroscope.csv'  # Open .csv file with time and acceleration in 3 axis, x,y,z
+gyro_data = 'sensor_data/My Experiment 2020-04-25 11-48-49/Gyroscope.csv'  # Open .csv file with time and
+# acceleration in 3 axis, x,y,z
 accelerometer_data = 'sensor_data/My Experiment 2020-04-25 11-48-49/Accelerometer.csv'
 
 time1 = np.array(
@@ -186,6 +187,7 @@ for n in range(len(time) - 1):
 
 ########################################################################################################################
 # GraphingModule.graph(time, w_x, w_y, w_z, 'Rotation(rads)', 'Position Data', 2)
-GraphingModuleCopy.animation1d(time, acceleration_x, acceleration_y, acceleration_z, updated_velocity_x, updated_velocity_y, updated_velocity_z,
-                           position_x, position_y, position_z, w_x, w_y, w_z, theta_x, theta_y, theta_z)
+GraphingModuleCopy.animation1d(time, acceleration_x, acceleration_y, acceleration_z, updated_velocity_x,
+                               updated_velocity_y, updated_velocity_z,
+                               position_x, position_y, position_z, w_x, w_y, w_z, theta_x, theta_y, theta_z)
 # AnimationModule.animation(position_x, position_y, position_z, theta_x,theta_y,theta_z)
