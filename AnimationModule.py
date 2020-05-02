@@ -66,8 +66,8 @@ def mouse_look(xpos, ypos):
 
 def animation(x_translation, y_translation, z_translation, x_rotation, y_rotation, z_rotation):
     # Import position data for x y z coordinates
-    x = x_translation
-    y = z_translation
+    x = 10*x_translation
+    y = 10*z_translation
     z = y_translation
 
     theta_x = x_rotation
@@ -265,6 +265,3 @@ def animation(x_translation, y_translation, z_translation, x_rotation, y_rotatio
                 i += 1
 
     pg.quit()
-
-
-

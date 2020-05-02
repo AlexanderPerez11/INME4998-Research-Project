@@ -1,6 +1,7 @@
 import numpy as np
+from pyquaternion import Quaternion
 import AnimationModule
-import GraphingModuleCopy
+import GraphingModule
 
 
 def num_integration(arr1, arr2, arr3):
@@ -11,11 +12,26 @@ def num_integration(arr1, arr2, arr3):
     return integral_value
 
 
+def quaternion_rotation(sample_rate, w_x, w_y, w_z, v_x, v_y, v_z):
+    w_norm = np.sqrt(w_x[n] ** 2 + w_y[n] ** 2 + w_z[n] ** 2)
+    alpha = w_norm / (sample_rate * 2)
+    q0 = np.cos(alpha)
+    q1 = np.sin(alpha) * w_x[n] / w_norm
+    q2 = np.sin(alpha) * w_y[n] / w_norm
+    q3 = np.sin(alpha) * w_z[n] / w_norm
+
+    v = np.array([v_x[n], v_y[n], v_z[n]])
+    q = Quaternion(q0, q1, q2, q3)
+    v_prime = q.rotate(v)
+
+    return v_prime
+
+
 # Recollect data from accelerometer and gyroscope
 
-gyro_data = 'sensor_data/My Experiment 2020-04-25 11-48-49/Gyroscope.csv'  # Open .csv file with time and
+gyro_data = 'sensor_data/Full Motion/Gyroscope.csv'  # Open .csv file with time and
 # acceleration in 3 axis, x,y,z
-accelerometer_data = 'sensor_data/My Experiment 2020-04-25 11-48-49/Accelerometer.csv'
+accelerometer_data = 'sensor_data/Full Motion/Linear Acceleration.csv'
 
 time1 = np.array(
     np.loadtxt(gyro_data, delimiter=',', skiprows=1, usecols=0))  # Create an array containing time values
@@ -69,12 +85,13 @@ velocity_z = np.zeros(len(time))
 updated_velocity_x = np.array([])
 updated_velocity_y = np.array([])
 updated_velocity_z = np.array([])
-velocity_data = np.array([])
+final_velocity_x = np.array([])
+final_velocity_y = np.array([])
+final_velocity_z = np.array([])
 
 position_x = np.zeros(len(time))
 position_y = np.zeros(len(time))
 position_z = np.zeros(len(time))
-position_data = np.array([])
 
 result_x = 0
 result_y = 0
@@ -90,6 +107,8 @@ for n in range(len(time) - 1):
     theta_y[n + 1] = result_y
     theta_z[n + 1] = result_z
 
+theta_x = theta_x * 0
+theta_y = theta_y * 0
 calibration_x = np.max(abs(acceleration_x[0:100]))
 calibration_y = np.max(abs(acceleration_y[0:100]))
 calibration_z = np.max(abs(acceleration_z[0:100]))
@@ -170,6 +189,21 @@ for i in range(len(time)):
         updated_velocity_z[i - 450:i] = 0
         count_z = 0
 
+for i in range(len(time)):
+    w_norm = np.sqrt(w_x[i] ** 2 + w_y[i] ** 2 + w_z[i] ** 2)
+    alpha = w_norm / (sample_rate * 2)
+    q0 = np.cos(alpha)
+    q1 = np.sin(alpha) * w_x[i] / w_norm
+    q2 = np.sin(alpha) * w_y[i] / w_norm
+    q3 = np.sin(alpha) * w_z[i] / w_norm
+
+    v = np.array([updated_velocity_x[i], updated_velocity_y[i], updated_velocity_z[i]])
+    q = Quaternion(q0, q1, q2, q3)
+    v_prime = q.rotate(v)
+    final_velocity_x = np.append(final_velocity_x, v_prime[0])
+    final_velocity_y = np.append(final_velocity_y, v_prime[1])
+    final_velocity_z = np.append(final_velocity_z, v_prime[2])
+
 ########################################################################################################################
 result_x = 0
 result_y = 0
@@ -177,17 +211,21 @@ result_z = 0
 
 for n in range(len(time) - 1):
     # integrate raw velocity to obtain raw position
-    result_x = num_integration(time, updated_velocity_x, position_x)
-    result_y = num_integration(time, updated_velocity_y, position_y)
-    result_z = num_integration(time, updated_velocity_z, position_z)
+    result_x = num_integration(time, final_velocity_x, position_x)
+    result_y = num_integration(time, final_velocity_y, position_y)
+    result_z = num_integration(time, final_velocity_z, position_z)
     # Store integrated data in a position array
     position_x[n + 1] = result_x
     position_y[n + 1] = result_y
     position_z[n + 1] = result_z
 
+# for n in range(len(time)):
+#     a = quaternion_rotation(sample_rate, w_x, w_y, w_z, position_x, position_y, position_z)
+#     position_x[n] = a[0]
+#     position_y[n] = a[1]
+#     position_z[n] = a[2]
 ########################################################################################################################
 # GraphingModule.graph(time, w_x, w_y, w_z, 'Rotation(rads)', 'Position Data', 2)
-# GraphingModuleCopy.animation1d(time, acceleration_x, acceleration_y, acceleration_z, updated_velocity_x,
-#                                updated_velocity_y, updated_velocity_z,
-#                                position_x, position_y, position_z, w_x, w_y, w_z, theta_x, theta_y, theta_z)
-# AnimationModule.animation(position_x, position_y, position_z, theta_x,theta_y,theta_z)
+GraphingModule.graph(time, position_x, position_y, position_z, None, None, 1)
+GraphingModule.graph(time, theta_x, theta_y, theta_z, None, None, 1)
+AnimationModule.animation(position_x, position_y, position_z, theta_x, theta_y, theta_z)
