@@ -24,3 +24,5 @@ rot = Quaternion(q0, q1, q2, q3)
 v = array([1, 0, 0])
 v_prime = rot.rotate(v)
 print(v_prime)
+
+testingData = sum(q0 + q1)
