@@ -7,7 +7,6 @@ SIZE = WIDTH, HEIGHT = (1280, 720)
 FPS = 30
 screen = pygame.display.set_mode(SIZE)
 clock = pygame.time.Clock()
-red = (0, 255, 0)
 
 def blit_text(surface, text, pos, font, color=pygame.Color('black')):
     words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
@@ -56,6 +55,7 @@ def main():
     while True:
 
         dt = clock.tick(FPS) / 1000
+        events = pygame.event.get()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -66,13 +66,14 @@ def main():
                 pygame.quit()
                 quit()
         events = pygame.event.get()
-        textinput.update(events)
+
         screen.fill(pygame.Color('white'))
         blit_text(screen, title, (20, 20), title_font)
         blit_text(screen, instructions, (20, 40), instructions_font)
         blit_text(screen, options_1, (20, 300), options_font)
         blit_text(screen, options_2, (20, 350), options_font)
-        screen.blit(textinput.get_surface(), (20, 400))
+        textinput.update(events)
+        screen.blit(textinput.get_surface(), (20, 600))
         pygame.display.update()
         clock.tick(30)
 

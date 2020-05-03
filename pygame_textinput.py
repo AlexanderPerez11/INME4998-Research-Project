@@ -20,11 +20,11 @@ class TextInput:
     def __init__(
             self,
             initial_string="",
-            font_family="",
-            font_size=35,
+            font_family="Times New Roman",
+            font_size=24,
             antialias=True,
-            text_color=(0, 0, 0),
-            cursor_color=(0, 0, 1),
+            text_color=(255, 255, 255),
+            cursor_color=(100, 100, 100),
             repeat_keys_initial_ms=400,
             repeat_keys_interval_ms=35,
             max_string_length=-1):
@@ -50,7 +50,7 @@ class TextInput:
         if not os.path.isfile(font_family):
             font_family = pygame.font.match_font(font_family)
 
-        self.font_object = pygame.font.Font(font_family, font_size)
+        self.font_object = pygame.font.SysFont(font_family, font_size)
 
         # Text-surface will be created during the first update call:
         self.surface = pygame.Surface((1, 1))

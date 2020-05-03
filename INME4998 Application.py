@@ -1,7 +1,7 @@
 import pygame
 import SensorDataProcessingModule
 
-pygame.init()wad
+pygame.init()
 def blit_text(surface, text, pos, font, color=pygame.Color('white')):
     words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
     space = font.size(' ')[0]  # The width of a space.
@@ -76,6 +76,6 @@ def main():
         blit_text(screen, options_1, (20, 300), options_font)
         blit_text(screen, options_2, (20, 350), options_font)
         pygame.display.update()
-
+        clock.tick(30)
 pygame.quit()
 main()
