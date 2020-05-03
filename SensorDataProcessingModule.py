@@ -1,8 +1,4 @@
 import numpy as np
-from pyquaternion import Quaternion
-import AnimationModule
-import GraphingModule
-
 
 def num_integration(arr1, arr2, arr3, n):
     a = arr2[n + 1]  # acceleration value used to calculate velocity and so on
@@ -12,23 +8,15 @@ def num_integration(arr1, arr2, arr3, n):
     return integral_value
 
 
-def quaternion_rotation(sample_rate, w_x, w_y, w_z, v_x, v_y, v_z,n):
-    w_norm = np.sqrt(w_x[n] ** 2 + w_y[n] ** 2 + w_z[n] ** 2)
-    alpha = w_norm / (sample_rate * 2)
-    q0 = np.cos(alpha)
-    q1 = np.sin(alpha) * w_x[n] / w_norm
-    q2 = np.sin(alpha) * w_y[n] / w_norm
-    q3 = np.sin(alpha) * w_z[n] / w_norm
-
-    v = np.array([v_x[n], v_y[n], v_z[n]])
-    q = Quaternion(q0, q1, q2, q3)
-    v_prime = q.rotate(v)
-
-    return v_prime
+def merge_list(arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8, arr9, arr10):
+    # create a list of coordinates to make animation easier
+    merged_list = [(arr1[n], arr2[n], arr3[n], arr4[n], arr5[n], arr6[n], arr7[n], arr8[n], arr9[n], arr10[n])
+                   for n in range(0, len(arr1))]
+    return merged_list
 
 
-    # Recollect data from accelerometer and gyroscope
 def process_data(data):
+    # Recollect data from accelerometer and gyroscope
     gyro_data = 'sensor_data/Full Motion/Gyroscope.csv'  # Open .csv file with time and
     # acceleration in 3 axis, x,y,z
     accelerometer_data = str(data)
@@ -36,11 +24,14 @@ def process_data(data):
     time1 = np.array(
         np.loadtxt(gyro_data, delimiter=',', skiprows=1, usecols=0))  # Create an array containing time values
     w_x = np.array(
-        np.loadtxt(gyro_data, delimiter=',', skiprows=1, usecols=1))  # Create an array containing acceleration values in x
+        np.loadtxt(gyro_data, delimiter=',', skiprows=1,
+                   usecols=1))  # Create an array containing acceleration values in x
     w_y = np.array(
-        np.loadtxt(gyro_data, delimiter=',', skiprows=1, usecols=2))  # Create an array containing acceleration values in y
+        np.loadtxt(gyro_data, delimiter=',', skiprows=1,
+                   usecols=2))  # Create an array containing acceleration values in y
     w_z = np.array(
-        np.loadtxt(gyro_data, delimiter=',', skiprows=1, usecols=3))  # Create an array containing acceleration values in z
+        np.loadtxt(gyro_data, delimiter=',', skiprows=1,
+                   usecols=3))  # Create an array containing acceleration values in z
 
     time2 = np.array(
         np.loadtxt(accelerometer_data, delimiter=',', skiprows=1, usecols=0))  # Create an array containing time values
@@ -72,7 +63,6 @@ def process_data(data):
             acceleration_z = acceleration_z[0:-(len(time2) - len(time1))]
 
     sample_rate = 100  # Set the sample rate for the specified device
-    sample_size = len(time)
 
     # Declare arrays for velocity and position in x,y,z directions with a size equal to that of time
     theta_x = np.zeros(len(time))
@@ -85,9 +75,6 @@ def process_data(data):
     updated_velocity_x = np.array([])
     updated_velocity_y = np.array([])
     updated_velocity_z = np.array([])
-    final_velocity_x = np.array([])
-    final_velocity_y = np.array([])
-    final_velocity_z = np.array([])
 
     position_x = np.zeros(len(time))
     position_y = np.zeros(len(time))
@@ -99,9 +86,9 @@ def process_data(data):
 
     for n in range(len(time) - 1):
         # integrate raw acceleration to obtain raw velocity
-        result_x = num_integration(time, w_x, theta_x,n)
-        result_y = num_integration(time, w_y, theta_y,n)
-        result_z = num_integration(time, w_z, theta_z,n)
+        result_x = num_integration(time, w_x, theta_x, n)
+        result_y = num_integration(time, w_y, theta_y, n)
+        result_z = num_integration(time, w_z, theta_z, n)
         # Store integrated data in a velocity array
         theta_x[n + 1] = result_x
         theta_y[n + 1] = result_y
@@ -133,18 +120,15 @@ def process_data(data):
     result_x = 0
     result_y = 0
     result_z = 0
-
     for n in range(len(time) - 1):
         # integrate raw acceleration to obtain raw velocity
-        result_x = num_integration(time, acceleration_x, velocity_x,n)
-        result_y = num_integration(time, acceleration_y, velocity_y,n)
-        result_z = num_integration(time, acceleration_z, velocity_z,n)
+        result_x = num_integration(time, acceleration_x, velocity_x, n)
+        result_y = num_integration(time, acceleration_y, velocity_y, n)
+        result_z = num_integration(time, acceleration_z, velocity_z, n)
         # Store integrated data in a velocity array
         velocity_x[n + 1] = result_x
         velocity_y[n + 1] = result_y
         velocity_z[n + 1] = result_z
-
-    ########################################################################################################################
 
     poly_fit_vx = np.polyfit(time, velocity_x, 5)  # Create a fitted curve of third degree to the velocity data
     poly_fit_values_vx = np.polyval(poly_fit_vx,
@@ -189,41 +173,21 @@ def process_data(data):
             updated_velocity_z[i - 450:i] = 0
             count_z = 0
 
-    # for i in range(len(time)):
-    #     w_norm = np.sqrt(w_x[i] ** 2 + w_y[i] ** 2 + w_z[i] ** 2)
-    #     alpha = w_norm / (sample_rate * 2)
-    #     q0 = np.cos(alpha)
-    #     q1 = np.sin(alpha) * w_x[i] / w_norm
-    #     q2 = np.sin(alpha) * w_y[i] / w_norm
-    #     q3 = np.sin(alpha) * w_z[i] / w_norm
-    #
-    #     v = np.array([updated_velocity_x[i], updated_velocity_y[i], updated_velocity_z[i]])
-    #     q = Quaternion(q0, q1, q2, q3)
-    #     v_prime = q.rotate(v)
-    #     final_velocity_x = np.append(final_velocity_x, v_prime[0])
-    #     final_velocity_y = np.append(final_velocity_y, v_prime[1])
-    #     final_velocity_z = np.append(final_velocity_z, v_prime[2])
-
-    ########################################################################################################################
     result_x = 0
     result_y = 0
     result_z = 0
 
     for n in range(len(time) - 1):
         # integrate raw velocity to obtain raw position
-        result_x = num_integration(time, updated_velocity_x, position_x,n)
-        result_y = num_integration(time, updated_velocity_y, position_y,n)
-        result_z = num_integration(time, updated_velocity_z, position_z,n)
+        result_x = num_integration(time, updated_velocity_x, position_x, n)
+        result_y = num_integration(time, updated_velocity_y, position_y, n)
+        result_z = num_integration(time, updated_velocity_z, position_z, n)
         # Store integrated data in a position array
         position_x[n + 1] = result_x
         position_y[n + 1] = result_y
         position_z[n + 1] = result_z
 
-    # for n in range(len(time)):
-    #     a = quaternion_rotation(sample_rate, w_x, w_y, w_z, position_x, position_y, position_z)
-    #     position_x[n] = a[0]
-    #     position_y[n] = a[1]
-    #     position_z[n] = a[2]
-    ########################################################################################################################
-    return time, acceleration_x, acceleration_y,acceleration_z,updated_velocity_x,updated_velocity_y,updated_velocity_z,position_x,position_y,position_z
-
+    kinematic_data = merge_list(time, acceleration_x, acceleration_y, acceleration_z,
+                                updated_velocity_x, updated_velocity_y, updated_velocity_z,
+                                position_x, position_y, position_z)
+    return kinematic_data

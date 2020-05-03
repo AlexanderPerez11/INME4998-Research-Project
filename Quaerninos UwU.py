@@ -24,5 +24,19 @@ rot = Quaternion(q0, q1, q2, q3)
 v = array([1, 0, 0])
 v_prime = rot.rotate(v)
 print(v_prime)
-#
+
+def quaternion_rotation(sample_rate, w_x, w_y, w_z, v_x, v_y, v_z, n):
+    w_norm = np.sqrt(w_x[n] ** 2 + w_y[n] ** 2 + w_z[n] ** 2)
+    alpha = w_norm / (sample_rate * 2)
+    q0 = np.cos(alpha)
+    q1 = np.sin(alpha) * w_x[n] / w_norm
+    q2 = np.sin(alpha) * w_y[n] / w_norm
+    q3 = np.sin(alpha) * w_z[n] / w_norm
+
+    v = np.array([v_x[n], v_y[n], v_z[n]])
+    q = Quaternion(q0, q1, q2, q3)
+    v_prime = q.rotate(v)
+
+    return v_prime
+
 # testingData = sum(q0 + q1)
