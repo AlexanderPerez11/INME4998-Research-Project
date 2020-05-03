@@ -3,6 +3,7 @@ import pygame_textinput
 import pygame
 pygame.init()
 
+
 # Create TextInput-object
 textinput = pygame_textinput.TextInput()
 
@@ -15,12 +16,16 @@ while True:
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
+            print(a)
             exit()
 
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_KP_ENTER:
+            a = textinput.get_text()
     # Feed it with events every frame
     textinput.update(events)
     # Blit its surface onto the screen
     screen.blit(textinput.get_surface(), (10, 10))
-
     pygame.display.update()
     clock.tick(30)
+
