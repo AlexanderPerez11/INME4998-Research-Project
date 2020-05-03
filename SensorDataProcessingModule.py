@@ -189,20 +189,20 @@ for i in range(len(time)):
         updated_velocity_z[i - 450:i] = 0
         count_z = 0
 
-for i in range(len(time)):
-    w_norm = np.sqrt(w_x[i] ** 2 + w_y[i] ** 2 + w_z[i] ** 2)
-    alpha = w_norm / (sample_rate * 2)
-    q0 = np.cos(alpha)
-    q1 = np.sin(alpha) * w_x[i] / w_norm
-    q2 = np.sin(alpha) * w_y[i] / w_norm
-    q3 = np.sin(alpha) * w_z[i] / w_norm
-
-    v = np.array([updated_velocity_x[i], updated_velocity_y[i], updated_velocity_z[i]])
-    q = Quaternion(q0, q1, q2, q3)
-    v_prime = q.rotate(v)
-    final_velocity_x = np.append(final_velocity_x, v_prime[0])
-    final_velocity_y = np.append(final_velocity_y, v_prime[1])
-    final_velocity_z = np.append(final_velocity_z, v_prime[2])
+# for i in range(len(time)):
+#     w_norm = np.sqrt(w_x[i] ** 2 + w_y[i] ** 2 + w_z[i] ** 2)
+#     alpha = w_norm / (sample_rate * 2)
+#     q0 = np.cos(alpha)
+#     q1 = np.sin(alpha) * w_x[i] / w_norm
+#     q2 = np.sin(alpha) * w_y[i] / w_norm
+#     q3 = np.sin(alpha) * w_z[i] / w_norm
+#
+#     v = np.array([updated_velocity_x[i], updated_velocity_y[i], updated_velocity_z[i]])
+#     q = Quaternion(q0, q1, q2, q3)
+#     v_prime = q.rotate(v)
+#     final_velocity_x = np.append(final_velocity_x, v_prime[0])
+#     final_velocity_y = np.append(final_velocity_y, v_prime[1])
+#     final_velocity_z = np.append(final_velocity_z, v_prime[2])
 
 ########################################################################################################################
 result_x = 0
@@ -211,9 +211,9 @@ result_z = 0
 
 for n in range(len(time) - 1):
     # integrate raw velocity to obtain raw position
-    result_x = num_integration(time, final_velocity_x, position_x)
-    result_y = num_integration(time, final_velocity_y, position_y)
-    result_z = num_integration(time, final_velocity_z, position_z)
+    result_x = num_integration(time, updated_velocity_x, position_x)
+    result_y = num_integration(time, updated_velocity_y, position_y)
+    result_z = num_integration(time, updated_velocity_z, position_z)
     # Store integrated data in a position array
     position_x[n + 1] = result_x
     position_y[n + 1] = result_y
@@ -226,6 +226,6 @@ for n in range(len(time) - 1):
 #     position_z[n] = a[2]
 ########################################################################################################################
 # GraphingModule.graph(time, w_x, w_y, w_z, 'Rotation(rads)', 'Position Data', 2)
-GraphingModule.graph(time, position_x, position_y, position_z, None, None, 1)
-GraphingModule.graph(time, theta_x, theta_y, theta_z, None, None, 1)
+GraphingModule.graph(time, acceleration_x, acceleration_y, acceleration_z, updated_velocity_x, updated_velocity_y,
+                     updated_velocity_z, position_x, position_y, position_z)
 AnimationModule.animation(position_x, position_y, position_z, theta_x, theta_y, theta_z)

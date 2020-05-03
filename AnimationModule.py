@@ -66,13 +66,13 @@ def mouse_look(xpos, ypos):
 
 def animation(x_translation, y_translation, z_translation, x_rotation, y_rotation, z_rotation):
     # Import position data for x y z coordinates
-    x = 10*x_translation
-    y = 10*z_translation
+    x = x_translation
+    y = z_translation
     z = y_translation
 
-    theta_x = x_rotation
-    theta_y = z_rotation
-    theta_z = y_rotation
+    theta_x = x_rotation * 0
+    theta_y = z_rotation * 0
+    theta_z = y_rotation * 0
 
     # Load 3d Meshes
     cube_indices, cube_buffer = ObjLoader.load_model("meshes/Rubiks Cube.obj")
