@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 import pygame_textinput
 import pygame
-import GraphingModule
+from GraphingModule import graph
 import AnimationModule
+import numpy as np
 import SensorDataProcessingModule
 
 pygame.init()
@@ -139,7 +140,9 @@ def graphing_menu():
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                print(kinematic_data)
+                graph(kinematic_data)
+
+
         textSurf, textRect = text_objects(str(filename), general_font)
         textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
         screen.blit(textSurf, textRect)
@@ -149,7 +152,31 @@ def graphing_menu():
 
 
 
+
 def animation_menu():
-    pass
+    global filename
+    global kinematic_data
+    running = True
+    screen = pygame.display.set_mode(screen_size)
+    clock = pygame.time.Clock()
+    while running:
+        screen.fill(black)
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                pass
+
+        textSurf, textRect = text_objects(str(filename), general_font)
+        textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
+        screen.blit(textSurf, textRect)
+
+        pygame.display.update()
+        clock.tick(30)
 
 main()

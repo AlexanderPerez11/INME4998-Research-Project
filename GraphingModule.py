@@ -1,12 +1,22 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-
+import main_app
 
 matplotlib.use('TkAgg')
 
+def graph(kinematic_data):
+    time = kinematic_data[0]
+    xacc = kinematic_data[1]
+    yacc = kinematic_data[2]
+    zacc = kinematic_data[3]
+    xvel = kinematic_data[4]
+    yvel = kinematic_data[5]
+    zvel = kinematic_data[6]
+    xpos = kinematic_data[7]
+    ypos = kinematic_data[8]
+    zpos = kinematic_data[9]
 
-def graph(time, xacc, yacc, zacc, xvel, yvel, zvel, xpos, ypos, zpos):
     fig = plt.figure(figsize=(15, 15))
     fig.canvas.set_window_title('1D Animation')
     ax1 = fig.add_subplot(321, autoscale_on=False, xlim=(-2, 2), ylim=(-2, 2))
@@ -114,5 +124,7 @@ def graph(time, xacc, yacc, zacc, xvel, yvel, zvel, xpos, ypos, zpos):
                             repeat=False)
     animation.FuncAnimation(fig, animate3, init_func=init3, frames=len(zpos), interval=10, blit=True,
                             repeat=False)
+
+    fig.canvas.mpl_connect("close event", main_app.graphing_menu())
     plt.show()
 
