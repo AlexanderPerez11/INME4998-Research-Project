@@ -44,6 +44,24 @@ void main()
 }
 """
 
+pygame.init()
+
+black = (0, 0, 0)
+white = (255, 255, 255)
+light_gray = (100, 100, 100)
+dark_gray = (50, 50, 50)
+
+screen_size = width, length = (1080, 520)
+
+filename = "Text"
+
+title_font = pygame.font.SysFont("Times New Roman", 24)
+general_font = pygame.font.SysFont('Times New Roman', 18)
+
+cam = Camera()
+WIDTH, HEIGHT = 1280, 720
+lastX, lastY = WIDTH / 2, HEIGHT / 2
+first_mouse = True
 
 def mouse_look(xpos, ypos):
     global first_mouse, lastX, lastY
@@ -60,27 +78,6 @@ def mouse_look(xpos, ypos):
     lastY = ypos
 
     cam.process_mouse_movement(xoffset, yoffset)
-
-
-pygame.init()
-
-black = (0, 0, 0)
-white = (255, 255, 255)
-light_gray = (100, 100, 100)
-dark_gray = (50, 50, 50)
-
-screen_size = width, length = (1080, 520)
-
-filename = "Text"
-title_font = pygame.font.SysFont("Times New Roman", 24)
-general_font = pygame.font.SysFont('Times New Roman', 18)
-global action_1
-action_1 = False
-
-cam = Camera()
-WIDTH, HEIGHT = 1280, 720
-lastX, lastY = WIDTH / 2, HEIGHT / 2
-first_mouse = True
 
 
 def blit_text(surface, text, pos, font, color=white):
@@ -161,10 +158,6 @@ def main():
                 kinematic_data = np.array(SensorDataProcessingModule.process_data(filename))
                 typing = False
 
-            if event.key == pygame.K_TAB:
-                animation()
-                screen = pygame.display.set_mode(screen_size)
-
         if typing:
             textinput.update(events)
             pygame.draw.lines(screen, light_gray, True, [[20, 320], [520, 320], [520, 345], [20, 345]])
@@ -184,6 +177,17 @@ def main():
         textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
         screen.blit(textSurf, textRect)
 
+        if xpos > 730 and (xpos < 730 + 200) and ypos > 400 and (ypos < 400 + 50):
+            pygame.draw.rect(screen, dark_gray, (730, 400, 200, 50))
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                animation_menu()
+        else:
+            pygame.draw.rect(screen, light_gray, (730, 400, 200, 50))
+
+        textSurf, textRect = text_objects("To Animation Module", general_font)
+        textRect.center = ((730 + (200 / 2)), (400 + (50 / 2)))
+        screen.blit(textSurf, textRect)
+
         pygame.display.update()
         clock.tick(30)
 
@@ -191,7 +195,6 @@ def main():
 def graphing_menu():
     global filename
     global kinematic_data
-    global action_1
     running = True
     screen = pygame.display.set_mode(screen_size)
     clock = pygame.time.Clock()
@@ -206,7 +209,6 @@ def graphing_menu():
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                action_1 = True
                 pygame.quit()
 
         textSurf, textRect = text_objects(str(filename), general_font)
@@ -220,6 +222,32 @@ def graphing_menu():
 def animation_menu():
     global filename
     global kinematic_data
+    title = "INME 4998 Research Project Animation Module"
+    instructions = """
+    This module allows the visualization of the provided data in a 
+    3-D environment created using Open GL. There are 4 camera modes 
+    binded to numbers 1, 2, 3, and 4 respectively:
+    --Press 1 for a Top View of the scene
+    --Press 2 for a Front View of the scene
+    --Press 3 for an Isometric View of the scene
+    --Press 4 for Free Roam of the scene
+    
+    In Free Roam mode you can move about the scene however you like. 
+    --Use WASD keys to move forward, left, backwards
+        and right respectively
+    --Press Space bar to ascend
+    --Press left control to descend
+    --Press shift + any direction to 
+        speed up in that direction
+    --Look around with your mouse.
+        
+    To start the animation press Enter
+    To reset the animation and view again press R
+    Press Escape to return to this menu
+    """
+
+    options_1 = """Press Esc to return to Main Menu"""
+
     running = True
     screen = pygame.display.set_mode(screen_size)
     clock = pygame.time.Clock()
@@ -232,9 +260,14 @@ def animation_menu():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
+        blit_text(screen, title, (20, 20), title_font)
+        blit_text(screen, instructions, (20, 40), general_font)
+        blit_text(screen, options_1, (930, 20), general_font)
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                pass
+                animation()
+                screen = pygame.display.set_mode(screen_size)
 
         textSurf, textRect = text_objects(str(filename), general_font)
         textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
@@ -258,7 +291,7 @@ def animation():
     # Set up a pg display with Open GL buffer and double buff an d resizable tags
     pygame.display.set_mode((WIDTH, HEIGHT), pygame.OPENGL | pygame.DOUBLEBUF | pygame.RESIZABLE)
 
-    pygame.mouse.set_visible(False)
+    # pygame.mouse.set_visible(False)
     pygame.event.set_grab(True)
 
     # Compile the shader program with the source vertex and fragment codes
