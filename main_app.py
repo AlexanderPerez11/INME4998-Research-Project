@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 import pygame_textinput
 import pygame
-from GraphingModule import graph
-import AnimationModule
+from pygame.locals import *
 import numpy as np
 import SensorDataProcessingModule
 
@@ -17,6 +16,9 @@ filename = "Text"
 kinematic_data = None
 title_font = pygame.font.SysFont("Times New Roman", 24)
 general_font = pygame.font.SysFont('Times New Roman', 18)
+global action_1
+action_1 = False
+
 
 def blit_text(surface, text, pos, font, color=white):
     words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
@@ -105,9 +107,7 @@ def main():
             screen.blit(textinput.get_surface(), (25, 325))
 
         if not typing:
-
             pygame.draw.lines(screen, white, True, [[20, 320], [520, 320], [520, 345], [20, 345]])
-
 
         if xpos > 150 and (xpos < 150 + 200) and ypos > 400 and (ypos < 400 + 50):
             pygame.draw.rect(screen, dark_gray, (150, 400, 200, 50))
@@ -123,9 +123,11 @@ def main():
         pygame.display.update()
         clock.tick(30)
 
+
 def graphing_menu():
     global filename
     global kinematic_data
+    global action_1
     running = True
     screen = pygame.display.set_mode(screen_size)
     clock = pygame.time.Clock()
@@ -140,8 +142,8 @@ def graphing_menu():
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                graph(kinematic_data)
-
+                action_1 = True
+                pygame.quit()
 
         textSurf, textRect = text_objects(str(filename), general_font)
         textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
@@ -149,24 +151,23 @@ def graphing_menu():
 
         pygame.display.update()
         clock.tick(30)
-
-
+    return action_1, kinematic_data
 
 
 def animation_menu():
     global filename
     global kinematic_data
-    running = True
+    running_1 = True
     screen = pygame.display.set_mode(screen_size)
     clock = pygame.time.Clock()
-    while running:
+    while running_1:
         screen.fill(black)
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
                 exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                running = False
+                running_1 = False
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
@@ -179,4 +180,3 @@ def animation_menu():
         pygame.display.update()
         clock.tick(30)
 
-main()

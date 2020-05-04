@@ -1,7 +1,6 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import main_app
 
 matplotlib.use('TkAgg')
 
@@ -125,6 +124,6 @@ def graph(kinematic_data):
     animation.FuncAnimation(fig, animate3, init_func=init3, frames=len(zpos), interval=10, blit=True,
                             repeat=False)
 
-    fig.canvas.mpl_connect("close event", main_app.graphing_menu())
+    # fig.canvas.mpl_connect("close event", main_app.graphing_menu())
     plt.show()
 
