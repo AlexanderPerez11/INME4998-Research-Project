@@ -10,8 +10,7 @@ def num_integration(arr1, arr2, arr3, n):
 
 def merge_list(arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8, arr9, arr10):
     # create a list of coordinates to make animation easier
-    merged_list = [(arr1[n], arr2[n], arr3[n], arr4[n], arr5[n], arr6[n], arr7[n], arr8[n], arr9[n], arr10[n])
-                   for n in range(0, len(arr1))]
+    merged_list = [[arr1], [arr2], [arr3], [arr4], [arr5], [arr6], [arr7], [arr8], [arr9], [arr10]]
     return merged_list
 
 
@@ -191,3 +190,4 @@ def process_data(data):
                                 updated_velocity_x, updated_velocity_y, updated_velocity_z,
                                 position_x, position_y, position_z)
     return kinematic_data
+

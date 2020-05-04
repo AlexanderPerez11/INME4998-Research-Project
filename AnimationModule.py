@@ -266,3 +266,5 @@ def animation(x_translation, y_translation, z_translation, x_rotation, y_rotatio
                 i += 1
 
     pg.quit()
+    main_app.animation_menu()
+

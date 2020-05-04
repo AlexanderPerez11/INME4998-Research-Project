@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 import pygame_textinput
 import pygame
-import SensorDataProcessingModule
 import GraphingModule
 import AnimationModule
+import SensorDataProcessingModule
 
 pygame.init()
 black = (0, 0, 0)
@@ -13,6 +13,7 @@ dark_gray = (50, 50, 50)
 screen_size = width, length = (1080, 520)
 
 filename = "Text"
+kinematic_data = None
 title_font = pygame.font.SysFont("Times New Roman", 24)
 general_font = pygame.font.SysFont('Times New Roman', 18)
 
@@ -41,7 +42,7 @@ def text_objects(text, font):
 
 
 def main():
-    global filename
+    global filename, kinematic_data
     # Create TextInput-object
     textinput = pygame_textinput.TextInput()
     screen = pygame.display.set_mode(screen_size)
@@ -94,7 +95,7 @@ def main():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 filename = textinput.get_text()
-
+                kinematic_data = SensorDataProcessingModule.process_data(filename)
                 typing = False
 
         if typing:
@@ -123,6 +124,7 @@ def main():
 
 def graphing_menu():
     global filename
+    global kinematic_data
     running = True
     screen = pygame.display.set_mode(screen_size)
     clock = pygame.time.Clock()
@@ -131,14 +133,13 @@ def graphing_menu():
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
-                print(filename)
                 exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                print(filename)
+                print(kinematic_data)
         textSurf, textRect = text_objects(str(filename), general_font)
         textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
         screen.blit(textSurf, textRect)
@@ -148,8 +149,7 @@ def graphing_menu():
 
 
 
-def animation_menu(a):
+def animation_menu():
     pass
-
 
 main()

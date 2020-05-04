@@ -2,6 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+
 matplotlib.use('TkAgg')
 
 
@@ -114,3 +115,4 @@ def graph(time, xacc, yacc, zacc, xvel, yvel, zvel, xpos, ypos, zpos):
     animation.FuncAnimation(fig, animate3, init_func=init3, frames=len(zpos), interval=10, blit=True,
                             repeat=False)
     plt.show()
+
