@@ -185,7 +185,7 @@ def animation(x_translation, y_translation, z_translation, x_rotation, y_rotatio
 
         velocity = 0.08
         keys_pressed = pg.key.get_pressed()
-        if keys_pressed[pg.K_KP_ENTER]:
+        if keys_pressed[pg.K_RETURN]:
             do_move = True
         if keys_pressed[pg.K_r]:
             reset = True
