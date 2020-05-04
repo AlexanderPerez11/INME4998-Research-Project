@@ -9,13 +9,18 @@ pygame.init()
 black = (0, 0, 0)
 white = (255, 255, 255)
 light_gray = (100, 100, 100)
+dark_gray = (50, 50, 50)
 screen_size = width, length = (1080, 520)
-global filename
+
+filename = "Text"
+title_font = pygame.font.SysFont("Times New Roman", 24)
+general_font = pygame.font.SysFont('Times New Roman', 18)
 
 def blit_text(surface, text, pos, font, color=white):
     words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
     space = font.size(' ')[0]  # The width of a space.
     max_width, max_height = surface.get_size()
+
     x, y = pos
     for line in words:
         for word in line:
@@ -31,10 +36,12 @@ def blit_text(surface, text, pos, font, color=white):
 
 
 def text_objects(text, font):
-    textSurface = font.render(text, True, black)
+    textSurface = font.render(text, True, white)
     return textSurface, textSurface.get_rect()
 
+
 def main():
+    global filename
     # Create TextInput-object
     textinput = pygame_textinput.TextInput()
     screen = pygame.display.set_mode(screen_size)
@@ -53,11 +60,9 @@ def main():
        4.5 seconds should be allowed for the program to register such an event
     """
 
-    options_1 = """Enter file name here and press Enter"""
+    options_1 = """Enter file name here and press Enter:"""
     options_2 = """Press Esc to exit"""
 
-    title_font = pygame.font.SysFont("Times New Roman", 24)
-    general_font = pygame.font.SysFont('Times New Roman', 18)
     typing = False
     while True:
         screen.fill(black)
@@ -67,7 +72,6 @@ def main():
             if event.type == pygame.QUIT:
                 exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                print(filename)
                 exit()
 
         # Feed it with events every frame
@@ -77,19 +81,20 @@ def main():
         blit_text(screen, instructions, (20, 40), general_font)
         blit_text(screen, options_1, (20, 300), general_font)
         blit_text(screen, options_2, (930, 20), general_font)
-        box_1, boxText_1 = text_objects("To Graphing Module", general_font)
-        boxText_1.center = ((150+(150/2)), (450+(50/2)))
+
         mouse_pos = pygame.mouse.get_pos()
         xpos = mouse_pos[0]
         ypos = mouse_pos[1]
 
-        if xpos > 20 and (xpos < 20+500) and ypos > 320 and (ypos <320+25) \
+        if xpos > 20 and (xpos < 20 + 500) and ypos > 320 and (ypos < 320 + 25) \
                 and event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            textinput.clear_text()
             typing = True
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 filename = textinput.get_text()
+
                 typing = False
 
         if typing:
@@ -98,24 +103,53 @@ def main():
             screen.blit(textinput.get_surface(), (25, 325))
 
         if not typing:
-            textinput.clear_text()
-            # pygame.draw.rect(screen, gray, (20, 320, 500, 25))
-            pygame.draw.lines(screen, white, True, [[20, 320], [520,320], [520, 345], [20, 345]])
+
+            pygame.draw.lines(screen, white, True, [[20, 320], [520, 320], [520, 345], [20, 345]])
 
 
+        if xpos > 150 and (xpos < 150 + 200) and ypos > 400 and (ypos < 400 + 50):
+            pygame.draw.rect(screen, dark_gray, (150, 400, 200, 50))
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                graphing_menu()
+        else:
+            pygame.draw.rect(screen, light_gray, (150, 400, 200, 50))
 
-        screen.blit(box_1, boxText_1)
-        pygame.draw.rect(screen, light_gray, (150,400, 150, 50))
+        textSurf, textRect = text_objects("To Graphing Module", general_font)
+        textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
+        screen.blit(textSurf, textRect)
 
+        pygame.display.update()
+        clock.tick(30)
+
+def graphing_menu():
+    global filename
+    running = True
+    screen = pygame.display.set_mode(screen_size)
+    clock = pygame.time.Clock()
+    while running:
+        screen.fill(black)
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                print(filename)
+                exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                print(filename)
+        textSurf, textRect = text_objects(str(filename), general_font)
+        textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
+        screen.blit(textSurf, textRect)
 
         pygame.display.update()
         clock.tick(30)
 
 
 
-def graphing_menu(a):
-    pass
-
 def animation_menu(a):
     pass
+
+
 main()
