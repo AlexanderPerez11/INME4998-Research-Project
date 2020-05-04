@@ -8,6 +8,7 @@ import pyrr
 from TextureLoader import load_texture_pygame
 from ObjLoader import ObjLoader
 from camera import Camera
+import main_app
 
 cam = Camera()
 WIDTH, HEIGHT = 1280, 720

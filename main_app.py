@@ -1,12 +1,16 @@
 #!/usr/bin/python3
 import pygame_textinput
 import pygame
+import SensorDataProcessingModule
+import GraphingModule
+import AnimationModule
 
 pygame.init()
 black = (0, 0, 0)
 white = (255, 255, 255)
 light_gray = (100, 100, 100)
 screen_size = width, length = (1080, 520)
+global filename
 
 def blit_text(surface, text, pos, font, color=white):
     words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
@@ -63,7 +67,7 @@ def main():
             if event.type == pygame.QUIT:
                 exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                print(a)
+                print(filename)
                 exit()
 
         # Feed it with events every frame
@@ -73,7 +77,8 @@ def main():
         blit_text(screen, instructions, (20, 40), general_font)
         blit_text(screen, options_1, (20, 300), general_font)
         blit_text(screen, options_2, (930, 20), general_font)
-
+        box_1, boxText_1 = text_objects("To Graphing Module", general_font)
+        boxText_1.center = ((150+(150/2)), (450+(50/2)))
         mouse_pos = pygame.mouse.get_pos()
         xpos = mouse_pos[0]
         ypos = mouse_pos[1]
@@ -84,7 +89,7 @@ def main():
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                a = textinput.get_text()
+                filename = textinput.get_text()
                 typing = False
 
         if typing:
@@ -99,7 +104,7 @@ def main():
 
 
 
-
+        screen.blit(box_1, boxText_1)
         pygame.draw.rect(screen, light_gray, (150,400, 150, 50))
 
 
