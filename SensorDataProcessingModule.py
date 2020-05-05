@@ -190,6 +190,3 @@ def process_data(data):
                                 updated_velocity_x, updated_velocity_y, updated_velocity_z,
                                 position_x, position_y, position_z)
     return kinematic_data
-
-a = process_data("Raw Data 9.csv")
-print(a[8][0])
