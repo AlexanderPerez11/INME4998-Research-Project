@@ -22,7 +22,7 @@ pygame.init()
 window = pygame.display.set_mode((900, 900), DOUBLEBUF)
 screen = pygame.display.get_surface()
 
-
+ax.plot([1, 2, 3, 4])
 
 
 a = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.10]
@@ -43,6 +43,7 @@ while not crashed:
     raw_data = renderer.tostring_rgb()
     surf = pygame.image.fromstring(raw_data, size, "RGB")
     screen.blit(surf, (0, 0))
+
     ax.cla()
     ax.grid()
     ax.xlim = (-2,2)
