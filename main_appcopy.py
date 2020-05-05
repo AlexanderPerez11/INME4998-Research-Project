@@ -264,13 +264,22 @@ def animation_menu():
         blit_text(screen, instructions, (20, 40), general_font)
         blit_text(screen, options_1, (930, 20), general_font)
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
-                animation()
-                screen = pygame.display.set_mode(screen_size)
+        mouse_pos = pygame.mouse.get_pos()
+        xpos = mouse_pos[0]
+        ypos = mouse_pos[1]
 
-        textSurf, textRect = text_objects(str(filename), general_font)
-        textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
+        if xpos > 730 and (xpos < 730 + 200) and ypos > 400 and (ypos < 400 + 50):
+            pygame.draw.rect(screen, dark_gray, (730, 400, 200, 50))
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                animation()
+                pygame.mouse.set_visible(True)
+                pygame.event.set_grab(False)
+                screen = pygame.display.set_mode(screen_size)
+        else:
+            pygame.draw.rect(screen, light_gray, (730, 400, 200, 50))
+
+        textSurf, textRect = text_objects("View Animation", general_font)
+        textRect.center = ((730 + (200 / 2)), (400 + (50 / 2)))
         screen.blit(textSurf, textRect)
 
         pygame.display.update()
@@ -291,7 +300,7 @@ def animation():
     # Set up a pg display with Open GL buffer and double buff an d resizable tags
     pygame.display.set_mode((WIDTH, HEIGHT), pygame.OPENGL | pygame.DOUBLEBUF | pygame.RESIZABLE)
 
-    # pygame.mouse.set_visible(False)
+    pygame.mouse.set_visible(False)
     pygame.event.set_grab(True)
 
     # Compile the shader program with the source vertex and fragment codes
