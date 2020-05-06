@@ -4,14 +4,18 @@ import os
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
 import pygame
+from pygame.locals import *
 import pyrr
 import numpy as np
+import matplotlib
+import matplotlib.backends.backend_agg as agg
+import pylab
 from TextureLoader import load_texture_pygame
 from ObjLoader import ObjLoader
 from camera import Camera
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '400,200'
-
+matplotlib.use("Agg")
 # Write out the shader program source code in Open GL C++
 vertex_src = """
 # version 330
@@ -227,13 +231,56 @@ def graphing_menu():
     # Get global values set in main menu loop
     global filename, kinematic_data
 
-    screen = pygame.display.set_mode(screen_size)
+    screen = pygame.display.set_mode(screen_size, DOUBLEBUF)
     clock = pygame.time.Clock()
 
+    fig = pylab.figure(figsize=[9 ,5.2], dpi=100)
+    ax1 = fig.add_subplot(321)
+    ax1.plot(kinematic_data[0], kinematic_data[1], label="x")
+    ax1.plot(kinematic_data[0], kinematic_data[2], label="y")
+    ax1.plot(kinematic_data[0], kinematic_data[3], label="z")
+    ax1.grid()
+    ax1.axhline(lw=1, color='k')
+    ax1.axvline(lw=1, color='k')
+    ax1.legend()
+    ax1.set_xlabel("time (s)")
+    ax1.set_ylabel("Acceleration (m/s^2)")
+    ax1.set_title("Acceleration in xyz")
+
+    ax2 = fig.add_subplot(323)
+    ax2.plot(kinematic_data[0], kinematic_data[4], label="x")
+    ax2.plot(kinematic_data[0], kinematic_data[5], label="y")
+    ax2.plot(kinematic_data[0], kinematic_data[6], label="z")
+    ax2.grid()
+    ax2.axhline(lw=1, color='k')
+    ax2.axvline(lw=1, color='k')
+    ax2.legend()
+    ax2.set_xlabel("time (s)")
+    ax2.set_ylabel("Velocity (m/s)")
+    ax2.set_title("Velocity in xyz")
+
+    ax3 = fig.add_subplot(325)
+    ax3.plot(kinematic_data[0], kinematic_data[4], label="x")
+    ax3.plot(kinematic_data[0], kinematic_data[5], label="y")
+    ax3.plot(kinematic_data[0], kinematic_data[6], label="z")
+    ax3.grid()
+    ax3.axhline(lw=1, color='k')
+    ax3.axvline(lw=1, color='k')
+    ax3.legend()
+    ax3.set_xlabel("time (s)")
+    ax3.set_ylabel("Position (m)")
+    ax3.set_title("Position in xyz")
+    canvas = agg.FigureCanvasAgg(fig)
+    canvas.draw()
+    size = canvas.get_width_height()
+    renderer = canvas.get_renderer()
+    raw_data = renderer.tostring_rgb()
+    graph = pygame.image.fromstring(raw_data, size, "RGB")
+    screen.blit(graph, (0, 0))
     running = True
     while running:
         # Graphing menu loop
-        screen.fill(black)
+        # screen.fill(black)
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
@@ -243,15 +290,7 @@ def graphing_menu():
                 # Check if Escape key was pressed to return to main menu
                 running = False
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
-                pygame.quit()
-
-        textSurf, textRect = text_objects(str(filename), general_font)
-        textRect.center = ((150 + (200 / 2)), (400 + (50 / 2)))
-        screen.blit(textSurf, textRect)
-
-        pygame.display.update()
+        pygame.display.flip()
         clock.tick(30)
 
 
