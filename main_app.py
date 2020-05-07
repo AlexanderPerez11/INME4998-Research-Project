@@ -196,9 +196,10 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 # If the button has been clicked, call the graphing_menu loop
                 graphing_menu()
+                screen = pygame.display.set_mode(screen_size)
                 pygame.display.update()
                 clock.tick(30)
-                screen = pygame.display.set_mode(screen_size)
+
 
 
         else:
