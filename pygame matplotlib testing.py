@@ -22,7 +22,7 @@ raw_data = renderer.tostring_rgb()
 
 
 pygame.init()
-
+clock = pygame.time.Clock()
 window = pygame.display.set_mode((600, 400), DOUBLEBUF)
 screen = pygame.display.get_surface()
 
@@ -30,10 +30,13 @@ size = canvas.get_width_height()
 
 surf = pygame.image.fromstring(raw_data, size, "RGB")
 screen.blit(surf, (0,0))
-pygame.display.flip()
+
 
 crashed = False
 while not crashed:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			crashed = True
+
+	pygame.display.flip()
+	clock.tick(30)

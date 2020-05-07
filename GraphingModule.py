@@ -2,6 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+
 matplotlib.use('TkAgg')
 
 def graph(kinematic_data):
@@ -127,3 +128,5 @@ def graph(kinematic_data):
     # fig.canvas.mpl_connect("close event", main_app.graphing_menu())
     plt.show()
 
+# kinematic_data = SensorDataProcessingModule.process_data("Raw Data 9.csv")
+# graph(kinematic_data)

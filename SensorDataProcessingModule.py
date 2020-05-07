@@ -189,4 +189,6 @@ def process_data(data):
     kinematic_data = merge_list(time, acceleration_x, acceleration_y, acceleration_z,
                                 updated_velocity_x, updated_velocity_y, updated_velocity_z,
                                 position_x, position_y, position_z)
+
     return kinematic_data
+    
