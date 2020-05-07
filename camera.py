@@ -19,27 +19,27 @@ class Camera:
 
     def camera_mode(self, mode):
         if mode == "TOPVIEW":
-            self.jaw = -90
+            self.jaw = 90
             self.pitch_constraint = DC["VERTICAL"]
             self.pitch = -90
-            self.camera_pos = Vector3([0, 20, 0])
+            self.camera_pos = Vector3([0, 10, 0])
             self.move_disabled = True
             self.update_camera_vectors()
 
         if mode == "FRONTVIEW":
             self.pitch_constraint = DC["HORIZONTAL"]
-            self.camera_pos = Vector3([0.0, 0, 20])
+            self.camera_pos = Vector3([0.0, 0, -10])
             self.camera_front = Vector3([0.0, 0.0, -1.0])
             self.camera_up = Vector3([0.0, 1.0, 0.0])
             self.camera_right = Vector3([1.0, 0.0, 0.0])
-            self.jaw = -90
+            self.jaw = 90
             self.pitch = 0
             self.move_disabled = True
             self.update_camera_vectors()
 
         if mode == "ISOMETRICVIEW":
             self.pitch_constraint = DC["ISOMETRIC"]
-            self.camera_pos = Vector3([-15, 15, 15])
+            self.camera_pos = Vector3([15, 15, -15])
             self.camera_front = Vector3([0.0, 0.0, -1.0])
             self.camera_up = Vector3([0.0, 1.0, 0.0])
             self.camera_right = Vector3([1.0, 0.0, 0.0])

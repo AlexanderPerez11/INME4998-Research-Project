@@ -132,14 +132,14 @@ def process_data(data):
         velocity_y[n + 1] = result_y
         velocity_z[n + 1] = result_z
 
-    poly_fit_vx = np.polyfit(time, velocity_x, 5)  # Create a fitted curve of third degree to the velocity data
+    poly_fit_vx = np.polyfit(time, velocity_x, 3)  # Create a fitted curve of third degree to the velocity data
     poly_fit_values_vx = np.polyval(poly_fit_vx,
                                     time)  # Extract polynomial values for each time signature in the array time
 
-    poly_fit_vy = np.polyfit(time, velocity_y, 5)
+    poly_fit_vy = np.polyfit(time, velocity_y, 3)
     poly_fit_values_vy = np.polyval(poly_fit_vy, time)
 
-    poly_fit_vz = np.polyfit(time, velocity_z, 5)
+    poly_fit_vz = np.polyfit(time, velocity_z, 3)
     ply_fit_values_vz = np.polyval(poly_fit_vz, time)
 
     for i in range(len(time)):
@@ -158,20 +158,20 @@ def process_data(data):
     for i in range(len(time)):
         if acceleration_x[i] == 0:
             count_x += 1
-        if count_x == 450:
-            updated_velocity_x[i - 450:i] = 0
+        if count_x == 400:
+            updated_velocity_x[i - 400:i] = 0
             count_x = 0
 
         if acceleration_y[i] == 0:
             count_y += 1
-        if count_y == 450:
-            updated_velocity_y[i - 450:i] = 0
+        if count_y == 400:
+            updated_velocity_y[i - 400:i] = 0
             count_y = 0
 
         if acceleration_z[i] == 0:
             count_z += 1
-        if count_z == 450:
-            updated_velocity_z[i - 450:i] = 0
+        if count_z == 400:
+            updated_velocity_z[i - 400:i] = 0
             count_z = 0
 
     result_x = 0

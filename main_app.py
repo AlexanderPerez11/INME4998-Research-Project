@@ -383,12 +383,12 @@ def animation_menu():
 def animation():
     # Import position data for x y z coordinates
     global kinematic_data, model
-    x = 10*kinematic_data[7][0]
-    y = 10*kinematic_data[9][0]
-    z = 10*kinematic_data[8][0]
+    x = kinematic_data[7][0]
+    y = kinematic_data[9][0]
+    z = kinematic_data[8][0]
 
     # Load 3d Meshes
-    cube_indices, cube_buffer = ObjLoader.load_model("meshes/Rubiks Cube.obj")
+    cube_indices, cube_buffer = ObjLoader.load_model("meshes/scaled_cube.obj")
     grid_indices, grid_buffer = ObjLoader.load_model("meshes/uv grid floor.obj")
 
     # Set up a pg display with Open GL buffer and double buff an d resizable tags
@@ -451,7 +451,7 @@ def animation():
     # Perspective, aspect ratio, near clipping plane, far clipping plane
     projection = pyrr.matrix44.create_perspective_projection_matrix(45, WIDTH / HEIGHT, 0.1, 50)
 
-    grid_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -1.5, 0]))
+    grid_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -2.5, 0]))
 
     # Call matrices locations in the shader source code
     model_loc = glGetUniformLocation(shader, "model")
