@@ -383,9 +383,9 @@ def animation_menu():
 def animation():
     # Import position data for x y z coordinates
     global kinematic_data, model
-    x = 5*kinematic_data[7][0]
-    y = 5*kinematic_data[9][0]
-    z = 5*kinematic_data[8][0]
+    x = 10*kinematic_data[7][0]
+    y = 10*kinematic_data[9][0]
+    z = 10*kinematic_data[8][0]
 
     # Load 3d Meshes
     cube_indices, cube_buffer = ObjLoader.load_model("meshes/Rubiks Cube.obj")
