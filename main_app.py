@@ -451,7 +451,7 @@ def animation():
     # Perspective, aspect ratio, near clipping plane, far clipping plane
     projection = pyrr.matrix44.create_perspective_projection_matrix(45, WIDTH / HEIGHT, 0.1, 50)
 
-    grid_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -2, 0]))
+    grid_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -1.5, 0]))
 
     # Call matrices locations in the shader source code
     model_loc = glGetUniformLocation(shader, "model")
