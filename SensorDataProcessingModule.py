@@ -1,5 +1,7 @@
 import numpy as np
-
+# result_x = 0
+# result_y = 0
+# result_z = 0
 def num_integration(arr1, arr2, arr3, n):
     a = arr2[n + 1]  # acceleration value used to calculate velocity and so on
     b = arr1[n + 1] - arr1[n]  # sample interval from point a to b
@@ -15,24 +17,25 @@ def merge_list(arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8, arr9, arr10):
 
 
 def process_data(data):
+    global result_x, result_y, result_z
     # Recollect data from accelerometer and gyroscope
-    gyro_data = 'sensor_data/Full Motion/Gyroscope.csv'  # Open .csv file with time and
+    # gyro_data = 'sensor_data/Full Motion/Gyroscope.csv'  # Open .csv file with time and
     # acceleration in 3 axis, x,y,z
     accelerometer_data = str(data)
 
-    time1 = np.array(
-        np.loadtxt(gyro_data, delimiter=',', skiprows=1, usecols=0))  # Create an array containing time values
-    w_x = np.array(
-        np.loadtxt(gyro_data, delimiter=',', skiprows=1,
-                   usecols=1))  # Create an array containing acceleration values in x
-    w_y = np.array(
-        np.loadtxt(gyro_data, delimiter=',', skiprows=1,
-                   usecols=2))  # Create an array containing acceleration values in y
-    w_z = np.array(
-        np.loadtxt(gyro_data, delimiter=',', skiprows=1,
-                   usecols=3))  # Create an array containing acceleration values in z
+    # time1 = np.array(
+    #     np.loadtxt(gyro_data, delimiter=',', skiprows=1, usecols=0))  # Create an array containing time values
+    # w_x = np.array(
+    #     np.loadtxt(gyro_data, delimiter=',', skiprows=1,
+    #                usecols=1))  # Create an array containing acceleration values in x
+    # w_y = np.array(
+    #     np.loadtxt(gyro_data, delimiter=',', skiprows=1,
+    #                usecols=2))  # Create an array containing acceleration values in y
+    # w_z = np.array(
+    #     np.loadtxt(gyro_data, delimiter=',', skiprows=1,
+    #                usecols=3))  # Create an array containing acceleration values in z
 
-    time2 = np.array(
+    time = np.array(
         np.loadtxt(accelerometer_data, delimiter=',', skiprows=1, usecols=0))  # Create an array containing time values
     acceleration_x = np.array(
         np.loadtxt(accelerometer_data, delimiter=',', skiprows=1,
@@ -44,29 +47,29 @@ def process_data(data):
         np.loadtxt(accelerometer_data, delimiter=',', skiprows=1,
                    usecols=3))  # Create an array containing acceleration values in z
 
-    time = np.array([])
+    # time = np.array([])
+    #
+    # if len(time1) == len(time2):
+    #     time = time1
+    #
+    # else:
+    #     if len(time1) > len(time2):
+    #         time = time2
+    #         w_x = w_x[0:-(len(time1) - len(time2))]
+    #         w_y = w_y[0:-(len(time1) - len(time2))]
+    #         w_z = w_z[0:-(len(time1) - len(time2))]
+    #     else:
+    #         time = time1
+    #         acceleration_x = acceleration_x[0:-(len(time2) - len(time1))]
+    #         acceleration_y = acceleration_y[0:-(len(time2) - len(time1))]
+    #         acceleration_z = acceleration_z[0:-(len(time2) - len(time1))]
 
-    if len(time1) == len(time2):
-        time = time1
-
-    else:
-        if len(time1) > len(time2):
-            time = time2
-            w_x = w_x[0:-(len(time1) - len(time2))]
-            w_y = w_y[0:-(len(time1) - len(time2))]
-            w_z = w_z[0:-(len(time1) - len(time2))]
-        else:
-            time = time1
-            acceleration_x = acceleration_x[0:-(len(time2) - len(time1))]
-            acceleration_y = acceleration_y[0:-(len(time2) - len(time1))]
-            acceleration_z = acceleration_z[0:-(len(time2) - len(time1))]
-
-    sample_rate = 100  # Set the sample rate for the specified device
+    # sample_rate = 100  # Set the sample rate for the specified device
 
     # Declare arrays for velocity and position in x,y,z directions with a size equal to that of time
-    theta_x = np.zeros(len(time))
-    theta_y = np.zeros(len(time))
-    theta_z = np.zeros(len(time))
+    # theta_x = np.zeros(len(time))
+    # theta_y = np.zeros(len(time))
+    # theta_z = np.zeros(len(time))
 
     velocity_x = np.zeros(len(time))
     velocity_y = np.zeros(len(time))
@@ -79,22 +82,22 @@ def process_data(data):
     position_y = np.zeros(len(time))
     position_z = np.zeros(len(time))
 
-    result_x = 0
-    result_y = 0
-    result_z = 0
-
-    for n in range(len(time) - 1):
-        # integrate raw acceleration to obtain raw velocity
-        result_x = num_integration(time, w_x, theta_x, n)
-        result_y = num_integration(time, w_y, theta_y, n)
-        result_z = num_integration(time, w_z, theta_z, n)
-        # Store integrated data in a velocity array
-        theta_x[n + 1] = result_x
-        theta_y[n + 1] = result_y
-        theta_z[n + 1] = result_z
-
-    theta_x = theta_x * 0
-    theta_y = theta_y * 0
+    # result_x = 0
+    # result_y = 0
+    # result_z = 0
+    #
+    # for n in range(len(time) - 1):
+    #     # integrate raw acceleration to obtain raw velocity
+    #     result_x = num_integration(time, w_x, theta_x, n)
+    #     result_y = num_integration(time, w_y, theta_y, n)
+    #     result_z = num_integration(time, w_z, theta_z, n)
+    #     # Store integrated data in a velocity array
+    #     theta_x[n + 1] = result_x
+    #     theta_y[n + 1] = result_y
+    #     theta_z[n + 1] = result_z
+    #
+    # theta_x = theta_x * 0
+    # theta_y = theta_y * 0
     calibration_x = np.max(abs(acceleration_x[0:100]))
     calibration_y = np.max(abs(acceleration_y[0:100]))
     calibration_z = np.max(abs(acceleration_z[0:100]))
@@ -152,7 +155,6 @@ def process_data(data):
     count_x = 0
     count_y = 0
     count_z = 0
-
     for i in range(len(time)):
         if acceleration_x[i] == 0:
             count_x += 1
@@ -175,7 +177,6 @@ def process_data(data):
     result_x = 0
     result_y = 0
     result_z = 0
-
     for n in range(len(time) - 1):
         # integrate raw velocity to obtain raw position
         result_x = num_integration(time, updated_velocity_x, position_x, n)
@@ -191,4 +192,4 @@ def process_data(data):
                                 position_x, position_y, position_z)
 
     return kinematic_data
-    
+

@@ -56,7 +56,7 @@ white = (255, 255, 255)
 light_gray = (100, 100, 100)
 dark_gray = (50, 50, 50)
 
-screen_size = width, length = (1280, 720)
+screen_size = width, length = (1080, 520)
 
 filename = "Text"
 
@@ -196,6 +196,11 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 # If the button has been clicked, call the graphing_menu loop
                 graphing_menu()
+                pygame.display.update()
+                clock.tick(30)
+                screen = pygame.display.set_mode(screen_size)
+
+
         else:
             # If not over the graphing menu box, draw a lighter colored button
             pygame.draw.rect(screen, light_gray, (150, 400, 200, 50))
@@ -231,18 +236,18 @@ def graphing_menu():
     # Get global values set in main menu loop
     global filename, kinematic_data
 
-    screen = pygame.display.set_mode(screen_size)
+    screen = pygame.display.set_mode((1920,1080),pygame.RESIZABLE)
     clock = pygame.time.Clock()
 
-    fig = pylab.figure(figsize=[12.8 ,7.2], dpi=100,)
+    fig = pylab.figure(figsize=[19.2 ,10.8], dpi=100,)
     ax1 = fig.add_subplot(311)
     ax1.plot(kinematic_data[0][0], kinematic_data[1][0], label="x")
     ax1.plot(kinematic_data[0][0], kinematic_data[2][0], label="y")
     ax1.plot(kinematic_data[0][0], kinematic_data[3][0], label="z")
     ax1.grid()
-    # ax1.axhline(lw=1, color='k')
-    # ax1.axvline(lw=1, color='k')
-    # ax1.legend()
+    ax1.axhline(lw=1, color='k')
+    ax1.axvline(lw=1, color='k')
+    ax1.legend()
     ax1.set_xlabel("time (s)")
     ax1.set_ylabel("Acceleration (m/s^2)")
     ax1.set_title("Acceleration in xyz")
@@ -252,21 +257,21 @@ def graphing_menu():
     ax2.plot(kinematic_data[0][0], kinematic_data[5][0], label="y")
     ax2.plot(kinematic_data[0][0], kinematic_data[6][0], label="z")
     ax2.grid()
-    # ax2.axhline(lw=1, color='k')
-    # ax2.axvline(lw=1, color='k')
-    # ax2.legend()
+    ax2.axhline(lw=1, color='k')
+    ax2.axvline(lw=1, color='k')
+    ax2.legend()
     ax2.set_xlabel("time (s)")
     ax2.set_ylabel("Velocity (m/s)")
     ax2.set_title("Velocity in xyz")
 
     ax3 = fig.add_subplot(313)
-    ax3.plot(kinematic_data[0][0], kinematic_data[4][0], label="x")
-    ax3.plot(kinematic_data[0][0], kinematic_data[5][0], label="y")
-    ax3.plot(kinematic_data[0][0], kinematic_data[6][0], label="z")
+    ax3.plot(kinematic_data[0][0], kinematic_data[7][0], label="x")
+    ax3.plot(kinematic_data[0][0], kinematic_data[8][0], label="y")
+    ax3.plot(kinematic_data[0][0], kinematic_data[9][0], label="z")
     ax3.grid()
-    # ax3.axhline(lw=1, color='k')
-    # ax3.axvline(lw=1, color='k')
-    # ax3.legend()
+    ax3.axhline(lw=1, color='k')
+    ax3.axvline(lw=1, color='k')
+    ax3.legend()
     ax3.set_xlabel("time (s)")
     ax3.set_ylabel("Position (m)")
     ax3.set_title("Position in xyz")
@@ -279,7 +284,6 @@ def graphing_menu():
     raw_data = renderer.tostring_rgb()
     graph = pygame.image.fromstring(raw_data, size, "RGB")
     screen.blit(graph, (0, 0))
-    pygame.display.flip()
     running = True
     while running:
         # Graphing menu loop
@@ -378,9 +382,9 @@ def animation_menu():
 def animation():
     # Import position data for x y z coordinates
     global kinematic_data, model
-    x = kinematic_data[7][0]
-    y = kinematic_data[8][0]
-    z = kinematic_data[9][0]
+    x = 5*kinematic_data[7][0]
+    y = 5*kinematic_data[9][0]
+    z = 5*kinematic_data[8][0]
 
     # Load 3d Meshes
     cube_indices, cube_buffer = ObjLoader.load_model("meshes/Rubiks Cube.obj")

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 
-matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
 
 def graph(kinematic_data):
     time = kinematic_data[0]
