@@ -1,21 +1,21 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-
+import SensorDataProcessingModule
 
 # matplotlib.use('TkAgg')
 
 def graph(kinematic_data):
-    time = kinematic_data[0]
-    xacc = kinematic_data[1]
-    yacc = kinematic_data[2]
-    zacc = kinematic_data[3]
-    xvel = kinematic_data[4]
-    yvel = kinematic_data[5]
-    zvel = kinematic_data[6]
-    xpos = kinematic_data[7]
-    ypos = kinematic_data[8]
-    zpos = kinematic_data[9]
+    time = kinematic_data[0][0]
+    xacc = kinematic_data[1][0]
+    yacc = kinematic_data[2][0]
+    zacc = kinematic_data[3][0]
+    xvel = kinematic_data[4][0]
+    yvel = kinematic_data[5][0]
+    zvel = kinematic_data[6][0]
+    xpos = kinematic_data[7][0]
+    ypos = kinematic_data[8][0]
+    zpos = kinematic_data[9][0]
 
     fig = plt.figure(figsize=(15, 15))
     fig.canvas.set_window_title('1D Animation')
@@ -128,5 +128,5 @@ def graph(kinematic_data):
     # fig.canvas.mpl_connect("close event", main_app.graphing_menu())
     plt.show()
 
-# kinematic_data = SensorDataProcessingModule.process_data("Raw Data 9.csv")
-# graph(kinematic_data)
+kinematic_data = SensorDataProcessingModule.process_data("Raw Data 9.csv")
+graph(kinematic_data)
